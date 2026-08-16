@@ -7,6 +7,8 @@ const progress = document.querySelector(".control-line i");
 const heroSegments = Array.from(document.querySelectorAll(".reel-progress i"));
 const previousButton = document.querySelector(".slider-prev");
 const nextButton = document.querySelector(".slider-next");
+const copyMailButton = document.querySelector("[data-copy-email]");
+const copyMailStatus = document.getElementById("copy-mail-status");
 
 function selectCut(index) {
   const selected = cuts[index];
@@ -59,6 +61,20 @@ if (previousButton && nextButton) {
 }
 
 selectCut(0);
+
+if (copyMailButton && copyMailStatus) {
+  copyMailButton.addEventListener("click", async () => {
+    const email = copyMailButton.dataset.copyEmail || "";
+    if (!email) return;
+
+    try {
+      await navigator.clipboard.writeText(email);
+      copyMailStatus.textContent = "メールアドレスをコピーしました。";
+    } catch {
+      copyMailStatus.textContent = "コピーできない場合は、下のメールアドレスを選択してコピーしてください。";
+    }
+  });
+}
 
 const motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
 const motionWords = Array.from(document.querySelectorAll("[data-motion-text]"));
